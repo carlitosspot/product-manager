@@ -1,15 +1,15 @@
 <?php
-use App\Entity\User;
+use App\Entity\Product;
 
 require '../vendor/autoload.php';
 
 
-$userResource = new \App\Resource\UserResource();
+$productResource = new \App\Resource\ProductResource();
 
 $app = new \Slim\Slim();
 
-$app->get('/users(/(:id)(/))', function($id = null) use ($userResource) {
-    echo $userResource->get($id);
+$app->get('/products(/(:id)(/))', function($id = null) use ($productResource) {
+    echo $productResource->get($id);
 });
 
 

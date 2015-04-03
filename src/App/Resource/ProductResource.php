@@ -3,13 +3,13 @@
 namespace App\Resource;
 
 use App\AbstractResource;
-use App\Entity\User;
+use App\Entity\Product;
 
 /**
  * Class Resource
  * @package App
  */
-class UserResource extends AbstractResource
+class ProductResource extends AbstractResource
 {
 
     /**
@@ -20,13 +20,13 @@ class UserResource extends AbstractResource
     public function get($id)
     {
         if ($id === null) {
-            $users = $this->getEntityManager()->getRepository('App\Entity\User')->findAll();
-            $users = array_map(function($user) {
-                                    return $this->convertToArray($user); },
-                                    $users);
-            $data = json_encode($users);
+            $products = $this->getEntityManager()->getRepository('App\Entity\Product')->findAll();
+            $products = array_map(function($product) {
+                                    return $this->convertToArray($product); },
+                                    $products);
+            //$data = json_encode($products);
         } else {
-            $data = $this->convertToArray($this->getEntityManager()->find('App\Entity\User', $id));
+            $data = $this->convertToArray($this->getEntityManager()->find('App\Entity\Product', $id));
         }
 
         // @TODO handle correct status when no data is found...
@@ -63,11 +63,11 @@ class UserResource extends AbstractResource
     }
 
 
-    private function convertToArray(User $user) {
+    private function convertToArray(Product $product) {
         return array(
-            'id' => $user->getId(),
-            'name' => $user->getName(),
-            'email' => $user->getEmail()
+            'id' => $product->getId(),
+            'name' => $product->getName(),
+            'description' => $product->getEmail()
         );
     }
 }

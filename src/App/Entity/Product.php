@@ -7,9 +7,9 @@ use Doctrine\ORM\Mapping;
 
 /**
  * @Entity
- * @Table(name="users")
+ * @Table(name="products")
  */
-class User
+class Product
 {
     /**
      * @var integer
@@ -30,7 +30,7 @@ class User
      * @var string
      * @Column(type="string", length=255)
      */
-    protected $email;
+    protected $description;
 
     // Define setters/getters for all properties...
     // 
@@ -50,18 +50,18 @@ class User
     /**
      * @return string
      */
-    public function getEmail()
+    public function getDescription()
     {
-        return $this->email;
+        return $this->description;
     }
 
 
     /**
-     * @param string $email
+     * @param string $description
      */
-    public function setEmail($email)
+    public function setDescription($description)
     {
-        $this->email = $email;
+        $this->description = $description;
     }
 
 
@@ -69,19 +69,19 @@ class User
     /**
      * @return string
      */
-    public function getPassword()
+    public function getName()
     {
-        return $this->password;
+        return $this->name;
     }
 
 
 
     /**
-     * @param string $password
+     * @param string $name
      */
-    public function setPassword($password)
+    public function setName($name)
     {
-        $this->password = md5($password);
+        $this->name = $name;
     }
 
 }
