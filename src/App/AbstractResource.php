@@ -49,7 +49,8 @@ abstract class AbstractResource
      */
     public function __construct()
     {
-        $this->setSlim(Slim::getInstance());
+        $slim = new \Slim\Slim();
+        $this->setSlim( $slim );
         $this->setEntityManager();
         $this->init();
     }
@@ -115,7 +116,7 @@ abstract class AbstractResource
     /**
      * @param \Slim\Slim $slim
      */
-    public function setSlim($slim)
+    public function setSlim( Slim $slim)
     {
         $this->slim = $slim;
         return $this;
@@ -130,20 +131,19 @@ abstract class AbstractResource
      * @param int $status
      * @param array $data
      */
-    public static function response($status = 200, array $data = array(), $allow = array())
+    public static function response($status = 200, array $data = array() )
     {
         /**
          * @var \Slim\Slim $slim
          */
         $slim = \Slim\Slim::getInstance();
         $slim->status($status);
-        $slim->response()->header('Content-Type', 'application/json');
+        
         if (!empty($data)) {
+            $slim->response()->header('Content-Type', 'application/json');
             $slim->response()->body(json_encode($data));
         }
-        if (!empty($allow)) {
-            $slim->response()->header('Allow', strtoupper(implode(',', $allow)));
-        }
+
         return;
     }
 }

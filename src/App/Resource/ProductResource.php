@@ -35,38 +35,41 @@ class ProductResource extends AbstractResource
      */
     public function get($id)
     {
+
         if ($id === null) {
             $data = $this->getProductService()->getProducts();
         } else {
             $data = $this->getProductService()->getProduct($id);
         }
-       
+
         if ($data === null) {
             self::response(self::STATUS_NOT_FOUND);
             return;
         }
+
         $response = array('product' => $data);
         self::response(self::STATUS_OK, $response);
     }
 
-    // POST, PUT, DELETE methods...
-    // 
-    // 
     
+
     /**
-     * Create product
+     * Create Product
      */
     public function post()
     {
-        $name = trim($this->getSlim()->request()->params('name'));
-        $description = trim($this->getSlim()->request()->params('description'));
+        $name = $this->getSlim()->request()->params('name');
+        $description = $this->getSlim()->request()->params('description');
+
         if (empty($name) || empty($description) || $name === null || $description === null) {
+            var_dump($name);
             self::response(self::STATUS_BAD_REQUEST);
             return;
         }
-        $user = $this->getUserService()->createUser($email, $password);
-        self::response(self::STATUS_CREATED, array('user', $user));
+        $product = $this->getProductService()->createProduct($name, $description);
+        self::response(self::STATUS_CREATED, array('product', $product));
     }
+
     
 
     public function put($id)

@@ -6,6 +6,8 @@ use App\Entity\Product as ProductEntity;
 
 class Product extends AbstractService
 {
+    
+
     /**
      * @param $id
      * @return object
@@ -26,6 +28,10 @@ class Product extends AbstractService
             'description' => $product->getEmail()
         );
     }
+
+
+
+
     /**
      * @return array|null
      */
@@ -39,10 +45,10 @@ class Product extends AbstractService
 
 
         /**
-         * @var \App\Entity\User $user
+         * @var \App\Entity\Product $product
          */
         $data = array();
-        foreach ($products as $user)
+        foreach ($products as $product)
         {
             $data[] = array(
                 'id' => $product->getId(),
@@ -52,25 +58,33 @@ class Product extends AbstractService
         }
         return $data;
     }
+
+
+
     /**
      * @param $email
      * @param $password
      * @return array
      */
-    public function createUser($email, $password)
+    public function createProduct($name, $description)
     {
-        $user = new UserEntity();
-        $user->setEmail($email);
-        $user->setPassword($password);
-        $this->getEntityManager()->persist($user);
+        $product = new ProductEntity();
+        $product->setName($name);
+        $product->setDescription($description);
+        $this->getEntityManager()->persist($product);
         $this->getEntityManager()->flush();
         return array(
-            'id' => $user->getId(),
-            'created' => $user->getCreated(),
-            'updated' => $user->getUpdated(),
-            'email' => $user->getEmail()
+            'id' => $product->getId(),
+            'name' => $product->getName(),
+            'description' => $product->getEmail()
         );
     }
+
+
+
+
+
+    
     /**
      * @param $id
      * @param $email

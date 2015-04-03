@@ -6,10 +6,17 @@ require '../vendor/autoload.php';
 
 $productResource = new \App\Resource\ProductResource();
 
-$app = new \Slim\Slim();
+$app = \Slim\Slim::getInstance();
 
 $app->get('/products(/(:id)(/))', function($id = null) use ($productResource) {
     $productResource->get($id);
+});
+
+
+
+// Post
+$app->post('/products', function() use ($productResource){
+        	$productResource->post();
 });
 
 
