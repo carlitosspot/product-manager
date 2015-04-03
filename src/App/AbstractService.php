@@ -3,7 +3,7 @@
 namespace App;
 
 
-abstract class Service
+abstract class AbstractService
 {
     /**
      * @var \Doctrine\ORM\EntityManager

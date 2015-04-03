@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Service;
-use App\Service;
+use App\AbstractService;
 use App\Entity\Product as ProductEntity;
+
 class Product extends AbstractService
 {
     /**
@@ -20,33 +21,33 @@ class Product extends AbstractService
             return null;
         }
         return array(
-            'id' => $product->getId(),
-            'created' => $product->getCreated(),
-            'updated' => $product->getUpdated(),
-            'email' => $product->getEmail()
+             'id' => $product->getId(),
+            'name' => $product->getName(),
+            'description' => $product->getEmail()
         );
     }
     /**
      * @return array|null
      */
-    public function getUsers()
+    public function getProducts()
     {
-        $repository = $this->getEntityManager()->getRepository('App\Entity\User');
-        $users = $repository->findAll();
-        if (empty($users)) {
+        $repository = $this->getEntityManager()->getRepository('App\Entity\Product');
+        $products = $repository->findAll();
+        if (empty($products)) {
             return null;
         }
+
+
         /**
          * @var \App\Entity\User $user
          */
         $data = array();
-        foreach ($users as $user)
+        foreach ($products as $user)
         {
             $data[] = array(
-                'id' => $user->getId(),
-                'created' => $user->getCreated(),
-                'updated' => $user->getUpdated(),
-                'email' => $user->getEmail(),
+                'id' => $product->getId(),
+            	'name' => $product->getName(),
+            	'description' => $product->getEmail()
             );
         }
         return $data;

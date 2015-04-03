@@ -3,7 +3,7 @@
 namespace App\Resource;
 
 use App\AbstractResource;
-use App\Entity\Product;
+use App\Service\Product as ProductService;
 
 /**
  * Class Resource
@@ -11,6 +11,22 @@ use App\Entity\Product;
  */
 class ProductResource extends AbstractResource
 {
+
+
+    private $productService = null;
+    
+
+
+    /**
+     * Get Product service
+     */
+    public function init()
+    {
+        $this->setProductService(new ProductService($this->getEntityManager()));
+    }
+
+
+
 
     /**
      * @param $id
@@ -20,18 +36,17 @@ class ProductResource extends AbstractResource
     public function get($id)
     {
         if ($id === null) {
-            $products = $this->getEntityManager()->getRepository('App\Entity\Product')->findAll();
-            $products = array_map(function($product) {
-                                    return $this->convertToArray($product); },
-                                    $products);
-            //$data = json_encode($products);
+            $data = $this->getProductService()->getProducts();
         } else {
-            $data = $this->convertToArray($this->getEntityManager()->find('App\Entity\Product', $id));
+            $data = $this->getProductService()->getProduct($id);
         }
-
-        // @TODO handle correct status when no data is found...
-
-        return json_encode($data);
+       
+        if ($data === null) {
+            self::response(self::STATUS_NOT_FOUND);
+            return;
+        }
+        $response = array('product' => $data);
+        self::response(self::STATUS_OK, $response);
     }
 
     // POST, PUT, DELETE methods...
@@ -86,4 +101,28 @@ class ProductResource extends AbstractResource
             'description' => $product->getEmail()
         );
     }
+
+
+
+    /**
+     * @return \App\Service\Product
+     */
+    public function getProductService()
+    {
+        return $this->productService;
+    }
+
+
+
+
+    /**
+     * @param \App\Service\Product $productService
+     */
+    public function setProductService($productService)
+    {
+        $this->productService = $productService;
+    }
+
+
+
 }

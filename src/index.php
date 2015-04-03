@@ -9,7 +9,7 @@ $productResource = new \App\Resource\ProductResource();
 $app = new \Slim\Slim();
 
 $app->get('/products(/(:id)(/))', function($id = null) use ($productResource) {
-    echo $productResource->get($id);
+    $productResource->get($id);
 });
 
 
