@@ -36,6 +36,22 @@ class ProductResource extends AbstractResource
 
     // POST, PUT, DELETE methods...
     // 
+    // 
+    
+    /**
+     * Create product
+     */
+    public function post()
+    {
+        $name = trim($this->getSlim()->request()->params('name'));
+        $description = trim($this->getSlim()->request()->params('description'));
+        if (empty($name) || empty($description) || $name === null || $description === null) {
+            self::response(self::STATUS_BAD_REQUEST);
+            return;
+        }
+        $user = $this->getUserService()->createUser($email, $password);
+        self::response(self::STATUS_CREATED, array('user', $user));
+    }
     
 
     public function put($id)
