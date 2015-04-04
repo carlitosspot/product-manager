@@ -4,10 +4,12 @@ use App\Entity\Product;
 require '../vendor/autoload.php';
 
 
+$app = new \Slim\Slim();
+
 $productResource = new \App\Resource\ProductResource();
 
-$app = \Slim\Slim::getInstance();
 
+// Get
 $app->get('/products(/(:id)(/))', function($id = null) use ($productResource) {
     $productResource->get($id);
 });
@@ -16,7 +18,20 @@ $app->get('/products(/(:id)(/))', function($id = null) use ($productResource) {
 
 // Post
 $app->post('/products', function() use ($productResource){
-        	$productResource->post();
+   	$productResource->post();
+});
+
+
+
+// Put
+$app->put('/products/:id(/)', function($id = null) use ($productResource) {
+    $productResource->put($id);
+});
+
+
+// Put
+$app->delete('/products/:id(/)', function($id = null) use ($productResource) {
+    $productResource->delete($id);
 });
 
 

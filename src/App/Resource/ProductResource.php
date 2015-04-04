@@ -62,10 +62,10 @@ class ProductResource extends AbstractResource
         $description = $this->getSlim()->request()->params('description');
 
         if (empty($name) || empty($description) || $name === null || $description === null) {
-            var_dump($name);
             self::response(self::STATUS_BAD_REQUEST);
             return;
         }
+
         $product = $this->getProductService()->createProduct($name, $description);
         self::response(self::STATUS_CREATED, array('product', $product));
     }
@@ -74,27 +74,40 @@ class ProductResource extends AbstractResource
 
     public function put($id)
     {
-        $app = \Slim\Slim::getInstance();
+        $name = $this->getSlim()->request()->params('name');
+        $description = $this->getSlim()->request()->params('description');
 
-        $name = $app->request()->params('name');
-        $email = $app->request()->params('email');
+        if (empty($name) || empty($description) || $name === null || $description === null) {
+            self::response(self::STATUS_BAD_REQUEST);
+            return;
+        }
 
-        // handle if $id is missing or $name or $email are valid etc.
-        // return valid status code or throw an exception
-        // depends on the concrete implementation
 
-        /** @var User $user */
-        $user = $this->getEntityManager()->find('App\Entity\User', $id);
-        // also check if $user has been found else handle correctly
-
-        $user->setEmail($email);
-        $user->setName($name);
-
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush();
-
-        return json_encode($this->convertToArray($user));
+        $product = $this->getProductService()->updateProduct($id, $name, $description);
+        if ($product === null) {
+            self::response(self::STATUS_NOT_IMPLEMENTED);
+            return;
+        }
+        self::response(self::STATUS_NO_CONTENT);
     }
+
+
+
+     /**
+     * @param $id
+     */
+    public function delete($id)
+    {
+        $status = $this->getProductService()->deleteProduct($id);
+        if ($status === false) {
+            self::response(self::STATUS_NOT_FOUND);
+            return;
+        }
+        self::response(self::STATUS_OK);
+    }
+
+
+
 
 
     private function convertToArray(Product $product) {

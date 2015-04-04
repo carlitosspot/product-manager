@@ -14,8 +14,10 @@ class Product extends AbstractService
      */
     public function getProduct($id)
     {
+        
         /**
          * @var \App\Entity\Product $product
+         * @return array|null
          */
         $repository = $this->getEntityManager()->getRepository('App\Entity\Product');
         $product = $repository->find($id);
@@ -25,7 +27,7 @@ class Product extends AbstractService
         return array(
              'id' => $product->getId(),
             'name' => $product->getName(),
-            'description' => $product->getEmail()
+            'description' => $product->getDescription()
         );
     }
 
@@ -53,7 +55,7 @@ class Product extends AbstractService
             $data[] = array(
                 'id' => $product->getId(),
             	'name' => $product->getName(),
-            	'description' => $product->getEmail()
+            	'description' => $product->getDescription()
             );
         }
         return $data;
@@ -62,8 +64,8 @@ class Product extends AbstractService
 
 
     /**
-     * @param $email
-     * @param $password
+     * @param $name
+     * @param $description
      * @return array
      */
     public function createProduct($name, $description)
@@ -76,7 +78,7 @@ class Product extends AbstractService
         return array(
             'id' => $product->getId(),
             'name' => $product->getName(),
-            'description' => $product->getEmail()
+            'description' => $product->getDescription()
         );
     }
 
@@ -87,43 +89,51 @@ class Product extends AbstractService
     
     /**
      * @param $id
-     * @param $email
-     * @param $password
+     * @param $name
+     * @param $description
      * @return array|null
      */
-    public function updateUser($id, $email, $password)
+    public function updateProduct($id, $name, $description)
     {
         /**
-         * @var \App\Entity\User $user
+         * @var \App\Entity\Product $product
          */
-        $repository = $this->getEntityManager()->getRepository('App\Entity\User');
-        $user = $repository->find($id);
-        if ($user === null) {
+        $repository = $this->getEntityManager()->getRepository('App\Entity\Product');
+        $product = $repository->find($id);
+        if ($product === null) {
             return null;
         }
-        $user->setEmail($email);
-        $user->setPassword($password);
-        $user->setUpdated(new \DateTime());
-        $this->getEntityManager()->persist($user);
+
+        $product->setName($name);
+        $product->setDescription($description);
+        // $product->setUpdated(new \DateTime());
+        $this->getEntityManager()->persist($product);
         $this->getEntityManager()->flush();
         return array(
-            'id' => $user->getId(),
-            'created' => $user->getCreated(),
-            'updated' => $user->getUpdated(),
-            'email' => $user->getEmail()
+            'id' => $product->getId(),
+            'name' => $product->getName(),
+            'description' => $product->getDescription(),
         );
     }
-    public function deleteUser($id)
+
+
+
+    /**
+     * @param $id
+     * 
+     * */
+    public function deleteProduct($id)
     {
         /**
-         * @var \App\Entity\User $user
+         * @var \App\Entity\Product $product
          */
-        $repository = $this->getEntityManager()->getRepository('App\Entity\User');
-        $user = $repository->find($id);
-        if ($user === null) {
+        $repository = $this->getEntityManager()->getRepository('App\Entity\Product');
+        $product = $repository->find($id);
+        if ($product === null) {
             return false;
         }
-        $this->getEntityManager()->remove($user);
+
+        $this->getEntityManager()->remove($product);
         $this->getEntityManager()->flush();
         return true;
     }
