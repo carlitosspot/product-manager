@@ -25,9 +25,12 @@ In the directory where the repo is, execute the following command line:
 Using curl or anyother tool like postman, GET/POST/PUT/DELETE can be used as such:
 
 
-`// get a product
+````// get a product
+
 $ curl -i -X GET http://yourdomain/product-ms/src/index.php/products/1
-`
+```
+
+
 `// get a products
 $ curl -i -X GET http://yourdomain/product-ms/src/index.php/products
 `
