@@ -15,12 +15,10 @@ $app->get('/products(/(:id)(/))', function($id = null) use ($productResource) {
 });
 
 
-
 // Post
 $app->post('/products', function() use ($productResource){
    	$productResource->post();
 });
-
 
 
 // Put

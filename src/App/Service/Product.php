@@ -24,11 +24,8 @@ class Product extends AbstractService
         if ($product === null) {
             return null;
         }
-        return array(
-             'id' => $product->getId(),
-            'name' => $product->getName(),
-            'description' => $product->getDescription()
-        );
+        
+        return $this->convertToArray($product);
     }
 
 
@@ -52,11 +49,7 @@ class Product extends AbstractService
         $data = array();
         foreach ($products as $product)
         {
-            $data[] = array(
-                'id' => $product->getId(),
-            	'name' => $product->getName(),
-            	'description' => $product->getDescription()
-            );
+            $data[] = $this->convertToArray($product);
         }
         return $data;
     }
@@ -68,18 +61,17 @@ class Product extends AbstractService
      * @param $description
      * @return array
      */
-    public function createProduct($name, $description)
+    public function createProduct($name, $description, $price, $inStock)
     {
         $product = new ProductEntity();
         $product->setName($name);
         $product->setDescription($description);
+        $product->setPrice($price);
+        $product->setInStock($inStock);
         $this->getEntityManager()->persist($product);
         $this->getEntityManager()->flush();
-        return array(
-            'id' => $product->getId(),
-            'name' => $product->getName(),
-            'description' => $product->getDescription()
-        );
+        
+        return $this->convertToArray($product);
     }
 
 
@@ -93,7 +85,7 @@ class Product extends AbstractService
      * @param $description
      * @return array|null
      */
-    public function updateProduct($id, $name, $description)
+    public function updateProduct($id, $name, $description, $price, $inStock)
     {
         /**
          * @var \App\Entity\Product $product
@@ -106,14 +98,12 @@ class Product extends AbstractService
 
         $product->setName($name);
         $product->setDescription($description);
-        // $product->setUpdated(new \DateTime());
+        $product->setPrice($price);
+        $product->setInStock($inStock);
         $this->getEntityManager()->persist($product);
         $this->getEntityManager()->flush();
-        return array(
-            'id' => $product->getId(),
-            'name' => $product->getName(),
-            'description' => $product->getDescription(),
-        );
+        
+        return $this->convertToArray($product);
     }
 
 
@@ -136,5 +126,17 @@ class Product extends AbstractService
         $this->getEntityManager()->remove($product);
         $this->getEntityManager()->flush();
         return true;
+    }
+
+
+
+    private function convertToArray(ProductEntity $product) {
+        return array(
+            'id' => $product->getId(),
+            'name' => $product->getName(),
+            'description' => $product->getDescription(),
+            'price' => $product->getPrice(),
+            'in_stock' => $product->getInStock(),
+        );
     }
 }

@@ -32,8 +32,21 @@ class Product
      */
     protected $description;
 
-    // Define setters/getters for all properties...
-    // 
+   /**
+     * @var float
+     * @Column(type="float")
+     */
+    protected $price;
+
+
+   /**
+     * @var boolean
+     * @Column(name="in_stock", type="boolean")
+     */
+    protected $inStock;
+
+
+
 
 
 
@@ -44,6 +57,26 @@ class Product
     {
         return $this->id;
     }    
+
+
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 
 
 
@@ -67,21 +100,41 @@ class Product
 
 
     /**
-     * @return string
+     * @return float
      */
-    public function getName()
+    public function getPrice()
     {
-        return $this->name;
+        return $this->price;
     }
 
 
 
     /**
-     * @param string $name
+     * @param float $price
      */
-    public function setName($name)
+    public function setPrice($price)
     {
-        $this->name = $name;
+        $this->price = $price;
+    }
+
+
+
+    /**
+     * @return boolean
+     */
+    public function getInStock()
+    {
+        return $this->inStock;
+    }
+
+
+
+    /**
+     * @param boolean $inStock
+     */
+    public function setInStock($inStock)
+    {
+        $this->inStock = $inStock;
     }
 
 }

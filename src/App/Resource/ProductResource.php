@@ -58,15 +58,30 @@ class ProductResource extends AbstractResource
      */
     public function post()
     {
-        $name = $this->getSlim()->request()->params('name');
-        $description = $this->getSlim()->request()->params('description');
+        // closure to convert string into a
+        // PHP boolean
+        $getBoolean = function($value){
+            // value shoud be string TRUE/FALSE/true/false
+            $value = mb_strtolower(trim($value));
+            if($value == 'true')
+                return true;
+            if($value == 'false')
+                return false;
+            else
+                throw new \Exception('unknow value: '.$value);
+        };
 
-        if (empty($name) || empty($description) || $name === null || $description === null) {
+       try {
+            $name = $this->requireParmeter($this->getSlim()->request()->params('name'), 'name');
+            $description = $this->requireParmeter($this->getSlim()->request()->params('description'), 'description');
+            $price = $this->requireParmeter($this->getSlim()->request()->params('price'), 'price');
+            $inStock = $getBoolean($this->getSlim()->request()->params('in_stock'));           
+       } catch ( \Exception $e) {
             self::response(self::STATUS_BAD_REQUEST);
             return;
-        }
+       }
 
-        $product = $this->getProductService()->createProduct($name, $description);
+        $product = $this->getProductService()->createProduct($name, $description, $price, $inStock);
         self::response(self::STATUS_CREATED, array('product', $product));
     }
 
@@ -74,16 +89,31 @@ class ProductResource extends AbstractResource
 
     public function put($id)
     {
-        $name = $this->getSlim()->request()->params('name');
-        $description = $this->getSlim()->request()->params('description');
+        // closure to convert string into a
+        // PHP boolean
+        $getBoolean = function($value){
+            // value shoud be string TRUE/FALSE/true/false
+            $value = mb_strtolower(trim($value));
+            if($value == 'true')
+                return true;
+            if($value == 'false')
+                return false;
+            else
+                throw new \Exception('unknow value: '.$value);
+        };
 
-        if (empty($name) || empty($description) || $name === null || $description === null) {
+       try {
+            $name = $this->requireParmeter($this->getSlim()->request()->params('name'), 'name');
+            $description = $this->requireParmeter($this->getSlim()->request()->params('description'), 'description');
+            $price = $this->requireParmeter($this->getSlim()->request()->params('price'), 'price');
+            $inStock = $getBoolean($this->getSlim()->request()->params('in_stock'));           
+       } catch ( \Exception $e) {
             self::response(self::STATUS_BAD_REQUEST);
             return;
-        }
+       }
 
 
-        $product = $this->getProductService()->updateProduct($id, $name, $description);
+       $product = $this->getProductService()->updateProduct($id, $name, $description, $price, $inStock);
         if ($product === null) {
             self::response(self::STATUS_NOT_IMPLEMENTED);
             return;
@@ -108,18 +138,6 @@ class ProductResource extends AbstractResource
 
 
 
-
-
-    private function convertToArray(Product $product) {
-        return array(
-            'id' => $product->getId(),
-            'name' => $product->getName(),
-            'description' => $product->getEmail()
-        );
-    }
-
-
-
     /**
      * @return \App\Service\Product
      */
@@ -137,6 +155,18 @@ class ProductResource extends AbstractResource
     public function setProductService($productService)
     {
         $this->productService = $productService;
+    }
+
+
+
+    private function requireParmeter($param, $name)
+    {
+        if (empty($param) || $param === null) {
+            throw new \Exception("Invalid value given for parameter ".$name);
+        }else{
+            return $param;
+        }
+            
     }
 
 
