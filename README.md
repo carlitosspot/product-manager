@@ -26,26 +26,31 @@ Using curl or anyother tool like postman, GET/POST/PUT/DELETE can be used as suc
 
 
 `// create a product
+
 $ curl -i -X POST -d "name=first&description=first-product&price=10&in_stock=true" http://yourdomain/product-ms/src/index.php/products
 `
 
 
 `// get a product
+
 $ curl -i -X GET http://yourdomain/product-ms/src/index.php/products/1
 `
 
 
 `// get products
+
 $ curl -i -X GET http://yourdomain/product-ms/src/index.php/products
 `
 
 
 `// update a product
+
 $ curl -i -X PUT -d "name=second&description=second-product&price=20&in_stock=true" http://yourdomain/product-ms/src/index.php/products
 `
 
 `
 // Delete a product
+
 $ curl -i -X DELETE http://yourdomain/product-ms/src/index.php/products1
 `
 
